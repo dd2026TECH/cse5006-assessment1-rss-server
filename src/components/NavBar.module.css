@@ -1,0 +1,40 @@
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: block;
+  }
+}
+
+.list {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+}
+
+.link {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.link:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.active:hover {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+}
