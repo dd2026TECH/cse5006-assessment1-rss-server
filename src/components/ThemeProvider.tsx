@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useSyncExternalStore,
 } from "react";
 
 export type ThemePreference = "light" | "dark" | "system";
@@ -38,6 +39,20 @@ function applyToDom(preference: ThemePreference) {
   }
 }
 
+function subscribeToSystemTheme(callback: () => void) {
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+function getSystemTheme(): ResolvedTheme {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+const noopSubscribe = () => () => {};
+
 export function ThemeProvider({
   initialTheme,
   children,
@@ -46,36 +61,55 @@ export function ThemeProvider({
   initialTheme: "light" | "dark" | null;
   children: React.ReactNode;
 }) {
-  const [preference, setPreferenceState] = useState<ThemePreference>(
-    initialTheme ?? "system",
+  // Set once the user picks a theme in this session; wins over everything.
+  const [override, setOverride] = useState<ThemePreference | null>(null);
+
+  // OS-level preference, live-updating if it changes while the app is open.
+  const systemTheme = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSystemTheme,
+    () => "light" as const,
   );
-  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>("light");
-  const [mounted, setMounted] = useState(false);
 
-  // Track the OS-level preference so "system" resolves correctly and
-  // live-updates if the OS theme changes while the app is open.
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const update = () => setSystemTheme(mq.matches ? "dark" : "light");
-    update();
-    setMounted(true);
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+  // False during SSR and hydration, true after mount — consumers use this
+  // to avoid presenting the SSR fallback as the real resolved theme.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
 
-  // If the cookie was cleared but localStorage survived, restore from it.
+  // If the cookie was cleared but localStorage survived, fall back to it.
+  const storedTheme = useSyncExternalStore(
+    noopSubscribe,
+    () => {
+      try {
+        return window.localStorage.getItem("theme");
+      } catch {
+        return null;
+      }
+    },
+    () => null,
+  );
+  const storedPreference =
+    !initialTheme && (storedTheme === "light" || storedTheme === "dark")
+      ? storedTheme
+      : null;
+
+  const preference: ThemePreference =
+    override ?? initialTheme ?? storedPreference ?? "system";
+
+  // When restoring from localStorage the DOM attribute and cookie are
+  // missing — re-apply them so CSS and the next server render agree.
   useEffect(() => {
-    if (initialTheme) return;
-    const stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") {
-      applyToDom(stored);
-      setPreferenceState(stored);
+    if (!override && storedPreference) {
+      applyToDom(storedPreference);
     }
-  }, [initialTheme]);
+  }, [override, storedPreference]);
 
   const setPreference = useCallback((next: ThemePreference) => {
     applyToDom(next);
-    setPreferenceState(next);
+    setOverride(next);
   }, []);
 
   const resolvedTheme = preference === "system" ? systemTheme : preference;

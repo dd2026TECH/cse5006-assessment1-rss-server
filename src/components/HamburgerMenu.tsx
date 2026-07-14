@@ -12,10 +12,13 @@ export default function HamburgerMenu() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
-  // Close the menu whenever the route changes
-  useEffect(() => {
+  // Close the menu whenever the route changes — state is adjusted during
+  // render (React's "adjusting state when props change" pattern).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // Escape closes the menu and returns focus to the button
   useEffect(() => {

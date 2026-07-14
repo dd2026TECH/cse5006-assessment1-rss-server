@@ -1,35 +1,49 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
-// Hydration-safe localStorage-backed state: the first render (server and
-// client) always uses initialValue, then the stored value is applied after
-// mount so server and client markup never disagree.
+// localStorage-backed state via useSyncExternalStore: the server snapshot
+// is null (so SSR and hydration render the fallback), and the stored value
+// applies after mount. Dispatching a storage event on write keeps every
+// component using the same key in sync — including across browser tabs.
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
 export function useLocalStorage<T>(key: string, initialValue: T) {
-  const [value, setValue] = useState<T>(initialValue);
-
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(key);
-      if (stored !== null) {
-        setValue(JSON.parse(stored) as T);
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => {
+      try {
+        return window.localStorage.getItem(key);
+      } catch {
+        return null;
       }
+    },
+    () => null,
+  );
+
+  let value = initialValue;
+  if (raw !== null) {
+    try {
+      value = JSON.parse(raw) as T;
     } catch {
       // Corrupted stored value — keep the initial value.
     }
-  }, [key]);
+  }
 
-  const setAndPersist = useCallback(
+  const setValue = useCallback(
     (next: T) => {
-      setValue(next);
       try {
         window.localStorage.setItem(key, JSON.stringify(next));
+        window.dispatchEvent(new StorageEvent("storage", { key }));
       } catch {
-        // Storage unavailable (private mode, quota) — state still works.
+        // Storage unavailable (private mode, quota) — ignore.
       }
     },
     [key],
   );
 
-  return [value, setAndPersist] as const;
+  return [value, setValue] as const;
 }
