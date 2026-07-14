@@ -16,29 +16,35 @@
   transform: translateY(-2px);
 }
 
+/* Each category sets an accent colour used by the banner and list stripe */
+.announcements {
+  --category-a: #047857;
+  --category-b: #10b981;
+}
+
+.guides {
+  --category-a: #1d4ed8;
+  --category-b: #3b82f6;
+}
+
+.research {
+  --category-a: #6d28d9;
+  --category-b: #a855f7;
+}
+
+.community {
+  --category-a: #c2410c;
+  --category-b: #f97316;
+}
+
 .banner {
   padding: 0.4rem 1.2rem;
+  background: linear-gradient(120deg, var(--category-a), var(--category-b));
   color: #ffffff;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-}
-
-.announcements {
-  background: linear-gradient(120deg, #047857, #10b981);
-}
-
-.guides {
-  background: linear-gradient(120deg, #1d4ed8, #3b82f6);
-}
-
-.research {
-  background: linear-gradient(120deg, #6d28d9, #a855f7);
-}
-
-.community {
-  background: linear-gradient(120deg, #c2410c, #f97316);
 }
 
 .content {
@@ -68,14 +74,47 @@
   color: var(--text-muted);
 }
 
+.categoryInline {
+  font-weight: 600;
+}
+
 .summary {
   color: var(--text-muted);
   font-size: 0.95rem;
 }
 
-.readMore {
+/* Collapsed state clamps the summary; "Show more" reveals the rest */
+.summaryClamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-top: auto;
   padding-top: 0.5rem;
+}
+
+.expandButton {
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.expandButton:hover {
+  color: var(--accent);
+}
+
+.readMore {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--accent);
@@ -84,4 +123,21 @@
 
 .readMore:hover {
   text-decoration: underline;
+}
+
+/* List variant: compact row for fast scanning, banner replaced by a stripe */
+.listVariant .banner {
+  display: none;
+}
+
+.listVariant {
+  border-left: 4px solid var(--category-b);
+}
+
+.listVariant .content {
+  padding: 0.9rem 1.2rem;
+}
+
+.listVariant .title {
+  font-size: 1.05rem;
 }

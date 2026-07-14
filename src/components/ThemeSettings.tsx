@@ -1,13 +1,9 @@
 "use client";
 
 import { useTheme, type ThemePreference } from "./ThemeProvider";
-import styles from "./ThemeSettings.module.css";
+import RadioCardGroup, { type RadioOption } from "./RadioCardGroup";
 
-const options: Array<{
-  value: ThemePreference;
-  label: string;
-  description: string;
-}> = [
+const options: ReadonlyArray<RadioOption<ThemePreference>> = [
   {
     value: "light",
     label: "Light",
@@ -29,36 +25,21 @@ export default function ThemeSettings() {
   const { preference, setPreference, resolvedTheme, mounted } = useTheme();
 
   return (
-    <fieldset className={styles.fieldset}>
-      <legend className={styles.legend}>Theme</legend>
-      <div className={styles.options}>
-        {options.map(({ value, label, description }) => (
-          <label
-            key={value}
-            className={`${styles.option} ${
-              preference === value ? styles.selected : ""
-            }`}
-          >
-            <input
-              type="radio"
-              name="theme"
-              value={value}
-              checked={preference === value}
-              onChange={() => setPreference(value)}
-              className={styles.radio}
-            />
-            <span className={styles.optionLabel}>{label}</span>
-            <span className={styles.optionDescription}>{description}</span>
-          </label>
-        ))}
-      </div>
-      <p className={styles.note}>
-        Your choice is saved in this browser (localStorage and a cookie), so
-        it persists across visits.
-        {mounted && preference === "system"
-          ? ` Currently following your device: ${resolvedTheme}.`
-          : ""}
-      </p>
-    </fieldset>
+    <RadioCardGroup
+      legend="Theme"
+      name="theme"
+      options={options}
+      value={preference}
+      onChange={setPreference}
+      note={
+        <>
+          Your choice is saved in this browser (localStorage and a cookie), so
+          it persists across visits.
+          {mounted && preference === "system"
+            ? ` Currently following your device: ${resolvedTheme}.`
+            : ""}
+        </>
+      }
+    />
   );
 }

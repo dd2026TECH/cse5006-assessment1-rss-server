@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { formatDate, type Post } from "@/lib/posts";
+import type { FeedLayout } from "@/lib/preferences";
 import styles from "./PostCard.module.css";
 
 const categoryStyles: Record<Post["category"], string> = {
@@ -9,12 +13,23 @@ const categoryStyles: Record<Post["category"], string> = {
   Community: styles.community,
 };
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({
+  post,
+  layout = "card",
+}: {
+  post: Post;
+  layout?: FeedLayout;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const summaryId = `post-summary-${post.id}`;
+
   return (
-    <article className={styles.card}>
-      <p className={`${styles.banner} ${categoryStyles[post.category]}`}>
-        {post.category}
-      </p>
+    <article
+      className={`${styles.card} ${
+        layout === "list" ? styles.listVariant : ""
+      } ${categoryStyles[post.category]}`}
+    >
+      <p className={styles.banner}>{post.category}</p>
       <div className={styles.content}>
         <h3 className={styles.title}>
           <Link href={`/feeds/${post.slug}`} className={styles.titleLink}>
@@ -25,13 +40,38 @@ export default function PostCard({ post }: { post: Post }) {
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           <span aria-hidden="true"> · </span>
           {post.source}
+          {layout === "list" && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span className={styles.categoryInline}>{post.category}</span>
+            </>
+          )}
         </p>
-        <p className={styles.summary}>{post.summary}</p>
-        <Link href={`/feeds/${post.slug}`} className={styles.readMore}>
-          Read more
-          <span className="sr-only">: {post.title}</span>
-          <span aria-hidden="true"> →</span>
-        </Link>
+        <p
+          id={summaryId}
+          className={`${styles.summary} ${
+            expanded ? "" : styles.summaryClamped
+          }`}
+        >
+          {post.summary}
+        </p>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.expandButton}
+            aria-expanded={expanded}
+            aria-controls={summaryId}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? "Show less" : "Show more"}
+            <span className="sr-only"> of the summary for {post.title}</span>
+          </button>
+          <Link href={`/feeds/${post.slug}`} className={styles.readMore}>
+            Read more
+            <span className="sr-only">: {post.title}</span>
+            <span aria-hidden="true"> →</span>
+          </Link>
+        </div>
       </div>
     </article>
   );
