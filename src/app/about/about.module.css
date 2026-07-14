@@ -1,0 +1,52 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 46rem;
+}
+
+.section h2 {
+  margin-bottom: 0.5rem;
+}
+
+.section p + p {
+  margin-top: 0.75rem;
+}
+
+.callout {
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: 0.75rem;
+}
+
+.video {
+  width: 100%;
+  margin-top: 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  aspect-ratio: 16 / 9;
+}
+
+.authorCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.authorCard dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.authorCard dd {
+  font-weight: 600;
+}
