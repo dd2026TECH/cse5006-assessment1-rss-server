@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import ThemeSettings from "@/components/ThemeSettings";
+import styles from "./settings.module.css";
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -7,9 +9,19 @@ export const metadata: Metadata = {
 
 export default function SettingsPage() {
   return (
-    <section>
+    <section className={styles.settings}>
       <h1>Settings</h1>
-      <p>Theme and layout preferences will appear here.</p>
+      <p className={styles.lede}>
+        Preferences are stored in your browser and applied across the whole
+        application.
+      </p>
+
+      <section aria-labelledby="appearance-heading" className={styles.group}>
+        <h2 id="appearance-heading" className="sr-only">
+          Appearance
+        </h2>
+        <ThemeSettings />
+      </section>
     </section>
   );
 }

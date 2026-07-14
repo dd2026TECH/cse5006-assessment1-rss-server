@@ -2,6 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
 import NavBar from "./NavBar";
 import HamburgerMenu from "./HamburgerMenu";
+import ThemeToggle from "./ThemeToggle";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -12,8 +13,11 @@ export default function Header() {
           <span className={styles.siteName}>{siteConfig.siteName}</span>
           <span className={styles.assessment}>{siteConfig.assessmentTitle}</span>
         </Link>
-        <NavBar />
-        <HamburgerMenu />
+        <div className={styles.controls}>
+          <NavBar />
+          <ThemeToggle />
+          <HamburgerMenu />
+        </div>
       </div>
     </header>
   );

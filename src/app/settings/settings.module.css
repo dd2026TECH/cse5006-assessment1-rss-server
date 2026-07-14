@@ -1,0 +1,17 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 46rem;
+}
+
+.lede {
+  color: var(--text-muted);
+}
+
+.group {
+  padding: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
