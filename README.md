@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RSS Server Frontend — CSE5006 Assessment 1
 
-## Getting Started
+A usability-focused frontend for an **RSS Server feeding into an LMS**.
+Assessment 1 is **frontend only**: blog-style sample content stands in for
+RSS feed items until the backend arrives in Assessment 2.
 
-First, run the development server:
+Bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
+(Next.js App Router, TypeScript, CSS Modules — no UI framework).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other scripts: `npm run build` (production build), `npm run lint` (ESLint).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Before submission:** set your name and student number in
+[`src/lib/siteConfig.ts`](src/lib/siteConfig.ts) — the header, footer and
+About page all read from it. Drop the walkthrough video at
+`public/videos/how-to.mp4`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
 
-## Learn More
+| Route | Purpose |
+|---|---|
+| `/` | Landing page: project intro, page links, RSS→LMS workflow overview |
+| `/about` | Project explanation, current scope, how-to video, author details |
+| `/feeds` | Sample posts: search, card/list layout toggle, expandable summaries |
+| `/feeds/[slug]` | Dynamic post pages with breadcrumbs |
+| `/settings` | Theme (light/dark/system) and feed layout preferences |
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Themes** — light/dark via CSS custom properties. The choice persists in
+  localStorage **and** a cookie, so the server renders the correct theme on
+  first paint (no flash). First visit follows `prefers-color-scheme`.
+- **Responsive navigation** — desktop nav bar collapses into an animated
+  hamburger menu (CSS transforms) with `aria-expanded`, Escape-to-close and
+  close-on-navigation.
+- **Accessibility** — semantic landmarks, skip link, keyboard operability,
+  visible focus styles, WCAG AA contrast in both themes,
+  `prefers-reduced-motion` support.
+- **Interactive feeds** — live search with an announced result count,
+  persisted card/list layout, expand/collapse summaries, breadcrumbs.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/          # App Router routes (each page + its CSS module)
+├── components/   # Reusable UI (Header, Footer, NavBar, HamburgerMenu,
+│                 # ThemeProvider, PostCard, FeedsView, Breadcrumbs, …)
+└── lib/          # siteConfig, sample posts behind getPosts(),
+                  # useLocalStorage hook, preference keys
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Posts are read exclusively through `getPosts()` / `getPostBySlug()` in
+[`src/lib/posts.ts`](src/lib/posts.ts) — in Assessment 2 these functions are
+reimplemented against the real RSS backend with no component changes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Git workflow
+
+Feature branches merged into `main` with `--no-ff`:
+`feature/layout-shell` → `feature/theme-system` → `feature/feeds-pages` →
+`feature/interactivity` → `feature/a11y-polish`.
+
+## Roadmap
+
+- **Assessment 2** — server component + live RSS ingestion
+- **Later** — LMS delivery, authentication, deployment
