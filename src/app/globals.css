@@ -14,6 +14,39 @@
   color-scheme: light;
 }
 
+/* Dark theme when the user has explicitly chosen it (cookie/localStorage).
+   The same values repeat in the media query below for first-time visitors
+   whose OS prefers dark — plain CSS has no way to share the block. */
+:root[data-theme="dark"] {
+  --bg: #0e1116;
+  --surface: #161b22;
+  --surface-2: #1f2630;
+  --text: #e7ebf0;
+  --text-muted: #a3adba;
+  --accent: #6ea8fe;
+  --accent-strong: #8bb9ff;
+  --on-accent: #0e1116;
+  --border: #2a323d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1116;
+    --surface: #161b22;
+    --surface-2: #1f2630;
+    --text: #e7ebf0;
+    --text-muted: #a3adba;
+    --accent: #6ea8fe;
+    --accent-strong: #8bb9ff;
+    --on-accent: #0e1116;
+    --border: #2a323d;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

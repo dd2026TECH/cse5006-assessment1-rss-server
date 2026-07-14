@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { siteConfig } from "@/lib/siteConfig";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -23,22 +25,35 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading the theme cookie here lets the server render the correct theme
+  // on first paint — no flash of the wrong theme on reload.
+  const cookieStore = await cookies();
+  const themeCookie = cookieStore.get("theme")?.value;
+  const initialTheme =
+    themeCookie === "light" || themeCookie === "dark" ? themeCookie : null;
+
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      data-theme={initialTheme ?? undefined}
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
       <body>
-        <a className="skip-link" href="#main">
-          Skip to main content
-        </a>
-        <Header />
-        <main id="main" className="container main-content">
-          {children}
-        </main>
-        <Footer />
+        <ThemeProvider initialTheme={initialTheme}>
+          <a className="skip-link" href="#main">
+            Skip to main content
+          </a>
+          <Header />
+          <main id="main" className="container main-content">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

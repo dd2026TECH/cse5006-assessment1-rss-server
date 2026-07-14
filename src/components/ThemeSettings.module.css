@@ -1,0 +1,62 @@
+.fieldset {
+  border: none;
+}
+
+.legend {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.option:hover {
+  border-color: var(--accent);
+}
+
+.option:has(:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.selected {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.optionLabel {
+  font-weight: 600;
+}
+
+.optionDescription {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.note {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
