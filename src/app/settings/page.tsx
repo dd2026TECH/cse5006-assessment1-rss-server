@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ThemeSettings from "@/components/ThemeSettings";
+import LayoutSettings from "@/components/LayoutSettings";
 import styles from "./settings.module.css";
 
 export const metadata: Metadata = {
@@ -21,6 +22,13 @@ export default function SettingsPage() {
           Appearance
         </h2>
         <ThemeSettings />
+      </section>
+
+      <section aria-labelledby="layout-heading" className={styles.group}>
+        <h2 id="layout-heading" className="sr-only">
+          Feed layout
+        </h2>
+        <LayoutSettings />
       </section>
     </section>
   );
