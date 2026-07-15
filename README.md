@@ -14,7 +14,8 @@ npm install
 npm run dev      # http://localhost:3000
 ```
 
-Other scripts: `npm run build` (production build), `npm run lint` (ESLint).
+Other scripts: `npm run build` (production build), `npm run lint` (ESLint),
+`npm test` (Playwright smoke suite — boots its own dev server on port 3457).
 
 **Before submission:** set your name and student number in
 [`src/lib/siteConfig.ts`](src/lib/siteConfig.ts) — the header, footer and
@@ -59,6 +60,13 @@ src/
 Posts are read exclusively through `getPosts()` / `getPostBySlug()` in
 [`src/lib/posts.ts`](src/lib/posts.ts) — in Assessment 2 these functions are
 reimplemented against the real RSS backend with no component changes.
+
+## Testing
+
+Playwright smoke tests in [`tests/smoke.spec.ts`](tests/smoke.spec.ts) cover the real browser
+interactions: hamburger menu (open/navigate/Escape with focus restore), theme toggle + cookie
+persistence across reload, feeds search with announced result count, layout toggle persistence,
+summary expand/collapse, dynamic post pages, breadcrumbs, and 404s. Run with `npm test`.
 
 ## Git workflow
 
