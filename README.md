@@ -7,6 +7,9 @@ RSS feed items until the backend arrives in Assessment 2.
 Bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
 (Next.js App Router, TypeScript, CSS Modules — no UI framework).
 
+**New to the codebase?** Read [CODE_TOUR.md](CODE_TOUR.md) — a guided walkthrough of how the
+app is put together, tracing real user actions through the code.
+
 ## Getting started
 
 ```bash
