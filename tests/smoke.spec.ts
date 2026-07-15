@@ -1,0 +1,160 @@
+import { test, expect } from "@playwright/test";
+import { siteConfig } from "../src/lib/siteConfig";
+
+test.describe("shell", () => {
+  test("home renders header title, footer identity and workflow", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.getByRole("banner")).toContainText(
+      "CSE5006 Assessment 1",
+    );
+    await expect(page.getByRole("contentinfo")).toContainText(
+      siteConfig.studentName,
+    );
+    await expect(
+      page.getByRole("heading", { name: "How the RSS Server will work" }),
+    ).toBeVisible();
+  });
+
+  test("primary nav reaches Feeds with breadcrumb and active state", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Primary" });
+    await nav.getByRole("link", { name: "Feeds" }).click();
+    await expect(page).toHaveURL("/feeds");
+    await expect(
+      nav.getByRole("link", { name: "Feeds" }),
+    ).toHaveAttribute("aria-current", "page");
+    await expect(
+      page.getByRole("navigation", { name: "Breadcrumb" }),
+    ).toBeVisible();
+  });
+});
+
+test.describe("hamburger menu (mobile)", () => {
+  test.use({ viewport: { width: 375, height: 812 } });
+
+  test("opens, navigates, and closes on Escape with focus restored", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // The button's accessible name flips between "Open menu"/"Close menu",
+    // so locate it by its stable aria-controls attribute.
+    const button = page.locator('button[aria-controls="mobile-menu"]');
+    await expect(button).toHaveAccessibleName("Open menu");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    const mobileNav = page.getByRole("navigation", { name: "Mobile" });
+    await mobileNav.getByRole("link", { name: "About" }).click();
+    await expect(page).toHaveURL("/about");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await page.keyboard.press("Escape");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await expect(button).toBeFocused();
+  });
+});
+
+test.describe("themes", () => {
+  test("header toggle switches to dark and persists across reload", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: /theme/i }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+    await page.reload();
+    // Server must render the dark theme from the cookie — no flash.
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  });
+
+  test("settings radios change the theme", async ({ page }) => {
+    await page.goto("/settings");
+    // The radio inputs are visually hidden behind styled label cards, so
+    // click the labels the way a user would.
+    await page.locator('label:has(input[name="theme"][value="dark"])').click();
+    await expect(
+      page.locator('input[name="theme"][value="dark"]'),
+    ).toBeChecked();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page
+      .locator('label:has(input[name="theme"][value="light"])')
+      .click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  });
+});
+
+test.describe("feeds interactivity", () => {
+  test("search narrows results and announces the count", async ({ page }) => {
+    await page.goto("/feeds");
+    await expect(page.getByRole("status")).toHaveText("6 posts");
+    await page.getByRole("searchbox", { name: "Search posts" }).fill("dark");
+    await expect(page.getByRole("status")).toHaveText("1 of 6 posts match");
+    await expect(
+      page.getByRole("link", {
+        name: "Getting started with dark mode in web apps",
+        exact: true,
+      }),
+    ).toBeVisible();
+  });
+
+  test("layout toggle persists after reload via localStorage", async ({
+    page,
+  }) => {
+    await page.goto("/feeds");
+    const listButton = page.getByRole("button", { name: "List", exact: true });
+    await expect(listButton).toHaveAttribute("aria-pressed", "false");
+    await listButton.click();
+    await expect(listButton).toHaveAttribute("aria-pressed", "true");
+
+    await page.reload();
+    await expect(
+      page.getByRole("button", { name: "List", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("summary expand/collapse toggles aria-expanded", async ({ page }) => {
+    await page.goto("/feeds");
+    const showMore = page
+      .getByRole("button", { name: /Show more/ })
+      .first();
+    await expect(showMore).toHaveAttribute("aria-expanded", "false");
+    await showMore.click();
+    await expect(
+      page.getByRole("button", { name: /Show less/ }).first(),
+    ).toHaveAttribute("aria-expanded", "true");
+  });
+});
+
+test.describe("dynamic post pages", () => {
+  test("read-more opens the post with body and breadcrumbs", async ({
+    page,
+  }) => {
+    await page.goto("/feeds");
+    await page
+      .getByRole("link", { name: /Read more.*Welcome to the RSS Server/ })
+      .click();
+    await expect(page).toHaveURL(/\/feeds\/welcome-to-the-rss-server-project/);
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Welcome to the RSS Server project",
+      }),
+    ).toBeVisible();
+    const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
+    await expect(crumbs).toContainText("Feeds");
+    await crumbs.getByRole("link", { name: "Feeds" }).click();
+    await expect(page).toHaveURL("/feeds");
+  });
+
+  test("unknown slug returns 404", async ({ page }) => {
+    const response = await page.goto("/feeds/does-not-exist");
+    expect(response?.status()).toBe(404);
+  });
+});
