@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { formatDate, type Post } from "@/lib/posts";
 import type { FeedLayout } from "@/lib/preferences";
@@ -30,6 +31,13 @@ export default function PostCard({
       } ${categoryStyles[post.category]}`}
     >
       <p className={styles.banner}>{post.category}</p>
+      <Image
+        src={post.imageUrl}
+        alt={post.imageAlt}
+        width={800}
+        height={450}
+        className={styles.image}
+      />
       <div className={styles.content}>
         <h3 className={styles.title}>
           <Link href={`/feeds/${post.slug}`} className={styles.titleLink}>
@@ -40,6 +48,8 @@ export default function PostCard({
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           <span aria-hidden="true"> · </span>
           {post.source}
+          <span aria-hidden="true"> · </span>
+          By {post.author}
           {layout === "list" && (
             <>
               <span aria-hidden="true"> · </span>

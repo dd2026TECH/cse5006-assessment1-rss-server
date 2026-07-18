@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { formatDate, getPostBySlug } from "@/lib/posts";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -46,6 +47,15 @@ export default async function PostPage({ params }: Props) {
           By {post.author}
         </p>
       </header>
+
+      <Image
+        src={post.imageUrl}
+        alt={post.imageAlt}
+        width={800}
+        height={450}
+        className={styles.hero}
+        priority
+      />
 
       <div className={styles.body}>
         {post.body.map((paragraph, index) => (

@@ -47,6 +47,13 @@
   text-transform: uppercase;
 }
 
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid var(--border);
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -125,8 +132,10 @@
   text-decoration: underline;
 }
 
-/* List variant: compact row for fast scanning, banner replaced by a stripe */
-.listVariant .banner {
+/* List variant: compact row for fast scanning, banner replaced by a stripe;
+   artwork stays in card view */
+.listVariant .banner,
+.listVariant .image {
   display: none;
 }
 

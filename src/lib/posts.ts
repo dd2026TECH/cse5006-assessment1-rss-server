@@ -1,8 +1,11 @@
 // Sample content standing in for RSS feed items (Assessment 1 is frontend
-// only). The shape follows the blog structure from the Module 4 labs.
+// only). The shape follows the blog structure from the Module 4 labs
+// (id, title, description→summary, author, date, imageUrl).
 // Everything reads through getPosts()/getPostBySlug() — in Assessment 2
 // these functions will be reimplemented against the real RSS backend
 // without any component changes.
+
+import { siteConfig } from "./siteConfig";
 
 export type PostCategory =
   | "Announcements"
@@ -18,6 +21,8 @@ export type Post = {
   body: string[];
   author: string;
   date: string; // ISO 8601
+  imageUrl: string;
+  imageAlt: string; // every image gets a real text alternative (WCAG)
   source: string; // name of the (future) RSS feed this item came from
   category: PostCategory;
 };
@@ -34,8 +39,11 @@ const posts: Post[] = [
       "Assessment 1 delivers the frontend you are looking at: navigation, themes, responsive layout, and this Feeds view. The posts shown here are sample content that stands in for live RSS items while the backend does not exist yet.",
       "In the next stage, the server component arrives and this page will begin displaying real syndicated content. Because the interface already reads posts through a single data function, that switch will happen without redesigning any screens.",
     ],
-    author: "Project Team",
+    author: siteConfig.studentName,
     date: "2026-07-10",
+    imageUrl: "/images/posts/rss-server.svg",
+    imageAlt:
+      "An RSS feed icon sending content to a screen that represents the LMS.",
     source: "Project Blog",
     category: "Announcements",
   },
@@ -52,6 +60,9 @@ const posts: Post[] = [
     ],
     author: "A. Reyes",
     date: "2026-07-08",
+    imageUrl: "/images/posts/accessible-content.svg",
+    imageAlt:
+      "Large readable letters beside light-on-dark and dark-on-light contrast samples.",
     source: "EdTech Weekly",
     category: "Guides",
   },
@@ -68,6 +79,9 @@ const posts: Post[] = [
     ],
     author: "L. Novak",
     date: "2026-07-05",
+    imageUrl: "/images/posts/rss-education.svg",
+    imageAlt:
+      "Three content sources connected by lines to a central RSS hub.",
     source: "Open Learning Digest",
     category: "Research",
   },
@@ -84,6 +98,9 @@ const posts: Post[] = [
     ],
     author: "S. Okafor",
     date: "2026-07-02",
+    imageUrl: "/images/posts/dark-mode.svg",
+    imageAlt:
+      "A circle split into a light half with sun rays and a dark half with stars, representing light and dark themes.",
     source: "Frontend Notes",
     category: "Guides",
   },
@@ -100,6 +117,9 @@ const posts: Post[] = [
     ],
     author: "Campus Dev Hub Editors",
     date: "2026-06-28",
+    imageUrl: "/images/posts/community-tools.svg",
+    imageAlt:
+      "Dots of different sizes joined into a network, representing a community of student developers.",
     source: "Campus Dev Hub",
     category: "Community",
   },
@@ -116,6 +136,9 @@ const posts: Post[] = [
     ],
     author: "M. Tran",
     date: "2026-06-24",
+    imageUrl: "/images/posts/feed-scanning.svg",
+    imageAlt:
+      "A wireframe list of posts with a vertical bar tracing an F-shaped scanning pattern.",
     source: "UX in Education",
     category: "Research",
   },
