@@ -25,6 +25,15 @@
   font-size: 0.95rem;
 }
 
+.hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
 .body {
   display: flex;
   flex-direction: column;
