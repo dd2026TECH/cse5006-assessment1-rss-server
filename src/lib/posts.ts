@@ -9,7 +9,9 @@ import { siteConfig } from "./siteConfig";
 
 export type PostCategory =
   | "Announcements"
-  | "Guides"
+  | "Theming"
+  | "Interactivity"
+  | "Accessibility"
   | "Research"
   | "Community";
 
@@ -49,22 +51,22 @@ const posts: Post[] = [
   },
   {
     id: 2,
-    slug: "designing-accessible-course-content",
-    title: "Designing accessible course content",
+    slug: "accessibility-as-engineering-not-garnish",
+    title: "Accessibility as engineering, not garnish",
     summary:
-      "Practical WCAG-informed habits for course authors: semantic structure, real headings, sufficient contrast, and text alternatives that actually describe things.",
+      "How I built accessibility into this interface from the start instead of bolting it on: semantic landmarks, a skip link, a real button with aria-expanded, keyboard operability, and WCAG AA contrast in both themes.",
     body: [
-      "Accessibility work is most effective when it starts at the authoring stage rather than being retrofitted. Semantic structure is the foundation: real headings in a logical order, lists marked up as lists, and links whose text says where they go.",
-      "Colour contrast is the next quick win. Body text should reach at least a 4.5:1 ratio against its background, and information should never be carried by colour alone — pair it with text or icons.",
-      "Finally, every image needs a text alternative written for the person who cannot see it. Describe what the image communicates, not what it looks like. A chart's alt text should state the finding, not 'a bar chart'.",
+      "When I started Assessment 1 I decided accessibility would be part of each feature rather than a final polish pass — that turned out to be the easier path, not the harder one. The page is built from semantic landmarks (header, nav, main, footer) so assistive technology can jump straight to a region, and the first thing the keyboard reaches is a skip-to-content link.",
+      "The hamburger menu was where it clicked for me. It is a real button, not a styled div, with aria-expanded and aria-controls so screen readers announce whether it is open, and it closes on Escape and on navigation. I tested the whole site with the mouse unplugged: every control is reachable and operable by keyboard, with a visible focus ring on each one.",
+      "I checked colour contrast in both light and dark themes and kept body text above the 4.5:1 WCAG AA ratio, and I added a prefers-reduced-motion rule so the animations disable for anyone who asks the system for less motion. The same discipline will carry into Assessment 2 — when real RSS content arrives, it inherits an interface that is already accessible.",
     ],
-    author: "A. Reyes",
-    date: "2026-07-08",
+    author: siteConfig.studentName,
+    date: "2026-07-09",
     imageUrl: "/images/posts/accessible-content.svg",
     imageAlt:
       "Large readable letters beside light-on-dark and dark-on-light contrast samples.",
-    source: "EdTech Weekly",
-    category: "Guides",
+    source: "Build Journal",
+    category: "Accessibility",
   },
   {
     id: 3,
@@ -87,22 +89,22 @@ const posts: Post[] = [
   },
   {
     id: 4,
-    slug: "getting-started-with-dark-mode",
-    title: "Getting started with dark mode in web apps",
+    slug: "building-a-dark-mode-that-never-flashes",
+    title: "Building a dark mode that never flashes",
     summary:
-      "Dark mode done properly is a design system exercise, not a colour swap. Custom properties, prefers-color-scheme, and persistence are the three pieces that matter.",
+      "How I built the light and dark themes for this app: every colour is a CSS variable switched by one data-theme attribute, and the choice is saved in a cookie so the server renders the right theme with no flash on reload.",
     body: [
-      "The teams that ship maintainable dark modes all do the same thing: they stop hard-coding colours. Every surface, border and text colour becomes a custom property, and the theme is just a different set of values for the same names.",
-      "Respecting the operating system preference via prefers-color-scheme is the polite default for first-time visitors. But the moment a user picks a theme explicitly, that choice should win — and it should survive a reload.",
-      "Persistence is where server-rendered apps earn their polish. Storing the choice where the server can read it means the very first byte of HTML already carries the right theme, and the dreaded flash of the wrong mode never happens.",
+      "My first decision was to stop putting colours inside components. Every surface, border and text colour in this app is a CSS custom property, and a theme is just a different set of values for those same names. Stamping data-theme=\"dark\" onto the root element swaps the whole palette at once — no component knows or cares which theme is active.",
+      "The hard part was the flash. Because Next.js renders on the server first, a purely client-side theme shows a flash of the wrong colour on every reload while the JavaScript catches up. I fixed it by saving the choice in a cookie as well as localStorage: the server reads the cookie during render, so the very first HTML it sends already carries the right theme. On a first visit, with no choice made yet, the app follows the operating-system preference via prefers-color-scheme.",
+      "This is the piece of the build I am most proud of, because it is invisible when it works. It also sets up Assessment 2 nicely — the theming is data-driven and component-agnostic, so real RSS content will drop into an interface that already themes itself correctly.",
     ],
-    author: "S. Okafor",
-    date: "2026-07-02",
+    author: siteConfig.studentName,
+    date: "2026-07-03",
     imageUrl: "/images/posts/dark-mode.svg",
     imageAlt:
       "A circle split into a light half with sun rays and a dark half with stars, representing light and dark themes.",
-    source: "Frontend Notes",
-    category: "Guides",
+    source: "Build Journal",
+    category: "Theming",
   },
   {
     id: 5,
@@ -125,22 +127,22 @@ const posts: Post[] = [
   },
   {
     id: 6,
-    slug: "structuring-feeds-for-quick-scanning",
-    title: "Structuring feeds for quick scanning",
+    slug: "designing-this-feeds-view-for-fast-scanning",
+    title: "Designing this Feeds view for fast scanning",
     summary:
-      "Users scan lists in an F-pattern and decide in seconds. Front-load titles, keep summaries under three lines, and make dates and sources instantly visible.",
+      "How I built the Feeds page you are reading: a live search that filters as you type and announces the result count, a card and list layout toggle that remembers your choice, and summaries you can expand in place — all reading through a single data function.",
     body: [
-      "Eye-tracking research is consistent: users scan content lists rather than reading them, following an F-shaped pattern down the left edge. The first two or three words of each title carry most of the decision weight.",
-      "For feed interfaces this suggests concrete rules. Front-load titles with the meaningful words. Keep summaries to two or three lines so several items fit on screen. Show the date and source at a glance, because recency and origin drive the read-or-skip decision.",
-      "Interaction design matters too: an expandable summary lets users triage without leaving the list, and a clear read-more affordance signals that depth is one click away. The list is the product — treat it that way.",
+      "The Feeds page is the heart of the app, so I built it for scanning rather than reading. Each card front-loads the title, then the date, source and author, then a short summary — because recency and origin are what drive the decision to read or skip. Users scan lists in an F-shaped pattern, so the meaningful words go first.",
+      "Then I layered on the interactions. A search box filters the posts as you type and announces how many match through an aria-live region, so screen-reader users hear the count change. A card-versus-list toggle lets you pick the density you prefer, and that choice is saved to localStorage so it survives a reload. Each summary can be expanded and collapsed in place, letting you triage many items without leaving the list.",
+      "The detail behind all of this is that the page never touches the sample data directly — it calls getPosts() from one module. That is deliberate: in Assessment 2 I reimplement that single function against the real RSS backend, and this whole view keeps working without a component change. The interactivity I built here is exactly what an RSS reader needs.",
     ],
-    author: "M. Tran",
-    date: "2026-06-24",
+    author: siteConfig.studentName,
+    date: "2026-07-06",
     imageUrl: "/images/posts/feed-scanning.svg",
     imageAlt:
       "A wireframe list of posts with a vertical bar tracing an F-shaped scanning pattern.",
-    source: "UX in Education",
-    category: "Research",
+    source: "Build Journal",
+    category: "Interactivity",
   },
 ];
 

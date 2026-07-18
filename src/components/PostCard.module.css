@@ -22,9 +22,19 @@
   --category-b: #10b981;
 }
 
-.guides {
+.theming {
   --category-a: #1d4ed8;
   --category-b: #3b82f6;
+}
+
+.interactivity {
+  --category-a: #0e7490;
+  --category-b: #06b6d4;
+}
+
+.accessibility {
+  --category-a: #be123c;
+  --category-b: #f43f5e;
 }
 
 .research {
