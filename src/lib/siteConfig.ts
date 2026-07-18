@@ -4,9 +4,8 @@
 export const siteConfig = {
   siteName: "RSS Server",
   assessmentTitle: "CSE5006 Assessment 1 — Frontend Design & Usability",
-  // TODO: confirm name and fill in student ID before submission
   studentName: "Xueting Denise Chin",
-  studentId: "[STUDENT ID]",
+  studentId: "22663637",
   description:
     "A usability-focused frontend for an RSS Server feeding into an LMS. Assessment 1 covers the user interface only; backend feed processing arrives in Assessment 2.",
   nav: [
