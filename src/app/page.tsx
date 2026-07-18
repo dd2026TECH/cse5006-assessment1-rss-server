@@ -4,14 +4,14 @@ import styles from "./page.module.css";
 
 const pageLinks = [
   {
-    href: "/feeds",
-    title: "Feeds",
-    text: "Browse blog-style sample posts standing in for RSS content — search, scan and read.",
-  },
-  {
     href: "/about",
     title: "About",
     text: "What this project is, where it is heading, and a video showing how to use the site.",
+  },
+  {
+    href: "/feeds",
+    title: "Feeds",
+    text: "Browse blog-style sample posts standing in for RSS content — search, scan and read.",
   },
   {
     href: "/settings",
