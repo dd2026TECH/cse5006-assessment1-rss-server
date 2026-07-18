@@ -14,6 +14,9 @@ import { siteConfig } from "./siteConfig";
 
 export type PostCategory = "Announcements" | "Learning" | "Theming" | "Research";
 
+/** A citation's exact substring in `body` paired with the real URL it should link to. */
+export type Citation = { text: string; href: string };
+
 export type Post = {
   id: number;
   slug: string;
@@ -26,6 +29,7 @@ export type Post = {
   imageAlt: string; // every image gets a real text alternative (WCAG)
   source: string; // name of the (future) RSS feed this item came from
   category: PostCategory;
+  citations?: Citation[];
 };
 
 const posts: Post[] = [
@@ -55,7 +59,7 @@ const posts: Post[] = [
     summary:
       "Before building my components I read up on how React expects components to be composed and reused. The core idea: small, single-purpose components combined together, not large ones with dozens of props.",
     body: [
-      "React's own documentation frames this through 'Thinking in React': break the interface into a component hierarchy where each component does one job, then compose them rather than writing one large component that tries to handle every case (React, n.d., reactjs.org/docs/thinking-in-react.html). The same document is direct about the alternative to reaching for a prop for every variant — favour composition, and let a component accept children or a small set of variant props instead of branching internally for every case.",
+      "React's own documentation frames this through 'Thinking in React': break the interface into a component hierarchy where each component does one job, then compose them rather than writing one large component that tries to handle every case (React, n.d., react.dev/learn/thinking-in-react). The same document is direct about the alternative to reaching for a prop for every variant — favour composition, and let a component accept children or a small set of variant props instead of branching internally for every case.",
       "The other point that stood out, also from the official docs, was about where data lives: components should not manage their own data if they do not have to — fetch it once, then pass it down as props, so the same component can be reused wherever that data shape shows up.",
       "What this means for my build: it is the reason PostCard in this app takes a layout prop instead of me writing a separate CardPostCard and ListPostCard. One component, one job, reused in two views. Reading the reasoning behind the pattern before I wrote the component is what stopped me from duplicating it.",
     ],
@@ -66,6 +70,9 @@ const posts: Post[] = [
       "Dots of different sizes joined into a network, representing components composed together.",
     source: "Research Notes",
     category: "Research",
+    citations: [
+      { text: "react.dev/learn/thinking-in-react", href: "https://react.dev/learn/thinking-in-react" },
+    ],
   },
   {
     id: 3,
@@ -104,6 +111,13 @@ const posts: Post[] = [
       "A server rack on one side connected by an arrow to a browser window on the other, representing the server/client boundary.",
     source: "Research Notes",
     category: "Research",
+    citations: [
+      {
+        text: "nextjs.org/docs/app/getting-started/server-and-client-components",
+        href: "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+      },
+      { text: "web.dev/articles/rendering-on-the-web", href: "https://web.dev/articles/rendering-on-the-web" },
+    ],
   },
   {
     id: 5,
@@ -142,6 +156,10 @@ const posts: Post[] = [
       "Large readable letters beside light-on-dark and dark-on-light contrast samples.",
     source: "Research Notes",
     category: "Research",
+    citations: [
+      { text: "w3.org/TR/WCAG22/", href: "https://www.w3.org/TR/WCAG22/" },
+      { text: "web.dev/articles/accessibility", href: "https://web.dev/articles/accessibility" },
+    ],
   },
   {
     id: 7,
@@ -180,6 +198,12 @@ const posts: Post[] = [
       "A wireframe list of posts with a vertical bar tracing an F-shaped scanning pattern.",
     source: "Research Notes",
     category: "Research",
+    citations: [
+      {
+        text: "nngroup.com/articles/f-shaped-pattern-reading-web-content-discovered/",
+        href: "https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content-discovered/",
+      },
+    ],
   },
   {
     id: 9,
@@ -199,6 +223,12 @@ const posts: Post[] = [
       "Four numbered milestones in a row connected by an arrow, representing a staged four-assessment project.",
     source: "Research Notes",
     category: "Research",
+    citations: [
+      {
+        text: "sre.google/sre-book/reliable-product-launches/",
+        href: "https://sre.google/sre-book/reliable-product-launches/",
+      },
+    ],
   },
   {
     id: 10,

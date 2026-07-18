@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { formatDate, getPostBySlug } from "@/lib/posts";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CitedParagraph from "@/components/CitedParagraph";
 import styles from "./post.module.css";
 
 type Props = {
@@ -59,7 +60,7 @@ export default async function PostPage({ params }: Props) {
 
       <div className={styles.body}>
         {post.body.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
+          <CitedParagraph key={index} text={paragraph} citations={post.citations} />
         ))}
       </div>
     </article>
