@@ -16,10 +16,18 @@
   transform: translateY(-2px);
 }
 
-/* Each category sets an accent colour used by the banner and list stripe */
+/* Each category sets an accent colour used by the banner and list stripe.
+   Learning/Theming/Announcements mark the student's own build-journal posts;
+   Research marks the externally-sourced research-notes posts — one shared
+   colour so the two content tracks read as distinct groups in the grid. */
 .announcements {
   --category-a: #047857;
   --category-b: #10b981;
+}
+
+.learning {
+  --category-a: #b45309;
+  --category-b: #f59e0b;
 }
 
 .theming {
@@ -27,24 +35,9 @@
   --category-b: #3b82f6;
 }
 
-.interactivity {
-  --category-a: #0e7490;
-  --category-b: #06b6d4;
-}
-
-.accessibility {
-  --category-a: #be123c;
-  --category-b: #f43f5e;
-}
-
 .research {
   --category-a: #6d28d9;
   --category-b: #a855f7;
-}
-
-.community {
-  --category-a: #c2410c;
-  --category-b: #f97316;
 }
 
 .banner {

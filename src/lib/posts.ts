@@ -4,16 +4,15 @@
 // Everything reads through getPosts()/getPostBySlug() — in Assessment 2
 // these functions will be reimplemented against the real RSS backend
 // without any component changes.
+//
+// This feed is written entirely by the student: five "Build Journal" posts
+// reflecting on what was actually new and difficult while building this app,
+// and five "Research Notes" posts where a real source was read and then tied
+// back to a decision made in this codebase.
 
 import { siteConfig } from "./siteConfig";
 
-export type PostCategory =
-  | "Announcements"
-  | "Theming"
-  | "Interactivity"
-  | "Accessibility"
-  | "Research"
-  | "Community";
+export type PostCategory = "Announcements" | "Learning" | "Theming" | "Research";
 
 export type Post = {
   id: number;
@@ -32,74 +31,131 @@ export type Post = {
 const posts: Post[] = [
   {
     id: 1,
-    slug: "welcome-to-the-rss-server-project",
-    title: "Welcome to the RSS Server project",
+    slug: "new-concepts-i-met-building-my-first-app",
+    title: "New concepts I met building my first app",
     summary:
-      "An introduction to this project: a server that collects RSS content and delivers it to learners through an LMS, starting with the interface you are using right now.",
+      "I started Assessment 1 not knowing what RSS, a hamburger menu, a cookie, or a breadcrumb trail actually were in code terms. Here is what each one turned out to mean.",
     body: [
-      "This project builds an RSS Server that feeds curated content into a Learning Management System. The goal is simple: learners should not have to chase content scattered across the web — the content should come to them, organised and readable, inside the environment where they already study.",
-      "Assessment 1 delivers the frontend you are looking at: navigation, themes, responsive layout, and this Feeds view. The posts shown here are sample content that stands in for live RSS items while the backend does not exist yet.",
-      "In the next stage, the server component arrives and this page will begin displaying real syndicated content. Because the interface already reads posts through a single data function, that switch will happen without redesigning any screens.",
+      "This is the first app I have built, so a lot of the words in the brief were new to me before I started, not just new to this project. Writing them down in plain terms is how I actually understood them.",
+      "RSS (Really Simple Syndication) is a standard format a website publishes so other tools can read its content programmatically instead of scraping the page — that is the whole idea behind the RSS Server this app is the frontend for. A hamburger menu is the three-line icon that expands into full navigation on small screens; a cookie is a small piece of data the browser sends back to the server with every request, which turned out to matter a lot once I got to theming. A breadcrumb trail is the small Home / Feeds / Post Title strip at the top of a page that shows where you are and lets you step back up one level at a time.",
+      "None of these were difficult once I saw them working, but I could not have named any of them accurately before this assessment. I am writing this post first, before the others, because everything else I built depends on understanding these basic pieces first.",
     ],
     author: siteConfig.studentName,
-    date: "2026-07-10",
+    date: "2026-06-24",
     imageUrl: "/images/posts/rss-server.svg",
     imageAlt:
       "An RSS feed icon sending content to a screen that represents the LMS.",
-    source: "Project Blog",
-    category: "Announcements",
+    source: "Build Journal",
+    category: "Learning",
   },
   {
     id: 2,
-    slug: "accessibility-as-engineering-not-garnish",
-    title: "Accessibility as engineering, not garnish",
+    slug: "react-component-composition-and-reuse",
+    title: "Research notes: React component composition and reuse",
     summary:
-      "How I built accessibility into this interface from the start instead of bolting it on: semantic landmarks, a skip link, a real button with aria-expanded, keyboard operability, and WCAG AA contrast in both themes.",
+      "Before building my components I read up on how React expects components to be composed and reused. The core idea: small, single-purpose components combined together, not large ones with dozens of props.",
     body: [
-      "When I started Assessment 1 I decided accessibility would be part of each feature rather than a final polish pass — that turned out to be the easier path, not the harder one. The page is built from semantic landmarks (header, nav, main, footer) so assistive technology can jump straight to a region, and the first thing the keyboard reaches is a skip-to-content link.",
-      "The hamburger menu was where it clicked for me. It is a real button, not a styled div, with aria-expanded and aria-controls so screen readers announce whether it is open, and it closes on Escape and on navigation. I tested the whole site with the mouse unplugged: every control is reachable and operable by keyboard, with a visible focus ring on each one.",
-      "I checked colour contrast in both light and dark themes and kept body text above the 4.5:1 WCAG AA ratio, and I added a prefers-reduced-motion rule so the animations disable for anyone who asks the system for less motion. The same discipline will carry into Assessment 2 — when real RSS content arrives, it inherits an interface that is already accessible.",
+      "React's own documentation frames this through 'Thinking in React': break the interface into a component hierarchy where each component does one job, then compose them rather than writing one large component that tries to handle every case (React, n.d., reactjs.org/docs/thinking-in-react.html). Community guides on 2026 React practice repeat the same point from a different angle — favour composition over inheritance, and keep components small enough to nest and combine rather than adding another prop for every variant (Kozak, 2026, medium.com/@romko.kozak/building-reusable-react-components-in-2026).",
+      "The other point that stood out was about where data lives: components should not manage their own data if they do not have to — fetch it once, then pass it down as props, so the same component can be reused wherever that data shape shows up.",
+      "What this means for my build: it is the reason PostCard in this app takes a layout prop instead of me writing a separate CardPostCard and ListPostCard. One component, one job, reused in two views. Reading the reasoning behind the pattern before I wrote the component is what stopped me from duplicating it.",
     ],
     author: siteConfig.studentName,
-    date: "2026-07-09",
-    imageUrl: "/images/posts/accessible-content.svg",
+    date: "2026-06-26",
+    imageUrl: "/images/posts/community-tools.svg",
     imageAlt:
-      "Large readable letters beside light-on-dark and dark-on-light contrast samples.",
-    source: "Build Journal",
-    category: "Accessibility",
-  },
-  {
-    id: 3,
-    slug: "why-rss-still-matters-for-education",
-    title: "Why RSS still matters for education",
-    summary:
-      "Algorithmic feeds decide for you; RSS lets institutions decide deliberately. A look at why syndication remains the most dependable pipe for course-relevant content.",
-    body: [
-      "RSS predates the social web, yet it solves a problem social platforms have made worse: getting the content you chose, in the order it was published, without an engagement algorithm in between.",
-      "For education this reliability is the whole point. A course coordinator can curate exactly which sources reach students — journal alerts, institutional news, industry blogs — and trust that nothing is being reordered or hidden.",
-      "Combined with an LMS, syndication becomes a distribution system: one place where curated external content appears alongside course material, with the same look, the same accessibility standards, and no extra accounts required.",
-    ],
-    author: "L. Novak",
-    date: "2026-07-05",
-    imageUrl: "/images/posts/rss-education.svg",
-    imageAlt:
-      "Three content sources connected by lines to a central RSS hub.",
-    source: "Open Learning Digest",
+      "Dots of different sizes joined into a network, representing components composed together.",
+    source: "Research Notes",
     category: "Research",
   },
   {
-    id: 4,
-    slug: "building-a-dark-mode-that-never-flashes",
-    title: "Building a dark mode that never flashes",
+    id: 3,
+    slug: "applying-component-reusability-for-the-first-time",
+    title: "Applying component reusability for the first time",
     summary:
-      "How I built the light and dark themes for this app: every colour is a CSS variable switched by one data-theme attribute, and the choice is saved in a cookie so the server renders the right theme with no flash on reload.",
+      "I learned the idea of reusable components in my IT Fundamentals course, but this is the first project where I actually built one. PostCard and siteConfig are where it shows up.",
     body: [
-      "My first decision was to stop putting colours inside components. Every surface, border and text colour in this app is a CSS custom property, and a theme is just a different set of values for those same names. Stamping data-theme=\"dark\" onto the root element swaps the whole palette at once — no component knows or cares which theme is active.",
-      "The hard part was the flash. Because Next.js renders on the server first, a purely client-side theme shows a flash of the wrong colour on every reload while the JavaScript catches up. I fixed it by saving the choice in a cookie as well as localStorage: the server reads the cookie during render, so the very first HTML it sends already carries the right theme. On a first visit, with no choice made yet, the app follows the operating-system preference via prefers-color-scheme.",
-      "This is the piece of the build I am most proud of, because it is invisible when it works. It also sets up Assessment 2 nicely — the theming is data-driven and component-agnostic, so real RSS content will drop into an interface that already themes itself correctly.",
+      "IT Fundamentals is where I first learned the idea that you should write a piece of logic once and reuse it, not copy it. This project is where I actually had to do it in real code rather than talk about it in theory. Two places in this app show the idea directly. PostCard is one component that renders a post two different ways — as a grid card or as a list row — controlled by a single layout prop, instead of two separate near-identical components. siteConfig.ts is the other: my name, student number, and the assessment title are written once and imported by the header, footer, and About page, so changing one file updates all three places at once instead of three separate edits that could drift apart.",
+      "One thing I found myself wondering while building this: is React similar to how PHP mixes server code with HTML? I think that is a fair comparison, but only half of it. Where they are alike: a Next.js Server Component runs on the server and outputs finished HTML before the browser sees it, which is the same basic idea as a PHP file mixing <?php ?> logic into an HTML page — both produce server-rendered HTML as the response. Where they are not alike: PHP is a templating and scripting language, it does not have a component model. React components are reusable units with their own props and, when needed, their own state, and they can also become Client Components that keep running and reacting in the browser after the page loads — updating the screen without a full page reload. Plain PHP + HTML + CSS does not have that second half at all; any change after the page loads needs a new request or separate JavaScript bolted on. So the server-rendering half of the comparison holds up; the component-and-interactivity half is where React (and Next.js Client Components) is doing something PHP was never built to do.",
+      "Realising that distinction is what made the App Router's split between Server and Client Components click for me — I go into that properly in the next research post.",
     ],
     author: siteConfig.studentName,
-    date: "2026-07-03",
+    date: "2026-06-28",
+    imageUrl: "/images/posts/rss-education.svg",
+    imageAlt:
+      "Three content sources connected by lines to a central hub, representing shared logic reused in several places.",
+    source: "Build Journal",
+    category: "Learning",
+  },
+  {
+    id: 4,
+    slug: "nextjs-server-and-client-components",
+    title: "Research notes: Next.js Server and Client Components",
+    summary:
+      "The App Router makes every component a Server Component by default. I read the official docs to understand when a component actually needs to become a Client Component, and why fewer is better.",
+    body: [
+      "Next.js's own documentation is direct about the default: in the App Router, Server Components are the default, and a file only becomes a Client Component when it is explicitly marked with the \"use client\" directive at the top (Next.js, n.d., nextjs.org/docs/app/getting-started/server-and-client-components). Client Components are needed specifically when a component uses React state or lifecycle hooks (useState, useEffect and similar), event handlers, or browser-only APIs — anything that has to keep running after the page has loaded.",
+      "The best-practice guidance I found alongside the docs was consistent: minimise Client Components rather than defensively marking large parts of the tree as client-side, and push the 'use client' boundary down to the smallest component that actually needs it rather than the page or layout above it. Marking too much as client-side quietly grows the JavaScript bundle the browser has to download, without any benefit.",
+      "This is exactly the rule I followed without having a name for it: in this app, only the theme toggle, the hamburger menu, and the search/feeds view are Client Components — everything else, including the page shells and PostCard's server-rendered structure, stays a Server Component by default. Reading the reasoning after the fact confirmed the instinct was the documented best practice, not luck.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-06-30",
+    imageUrl: "/images/posts/nextjs-boundary.svg",
+    imageAlt:
+      "A server rack on one side connected by an arrow to a browser window on the other, representing the server/client boundary.",
+    source: "Research Notes",
+    category: "Research",
+  },
+  {
+    id: 5,
+    slug: "learning-git-feature-branches-on-this-project",
+    title: "Learning git feature branches on this project",
+    summary:
+      "I had used GitHub before, but always as one branch. This assessment is where I learned to split work into separate streams per component and merge them back deliberately.",
+    body: [
+      "I already knew how to use GitHub before this course — commit, push, done. What I had not done before is separate my work into streams: a branch per feature, developed and tested on its own, then merged back rather than everything landing directly on main.",
+      "In this repository that looked like feature/layout-shell for the header, footer, nav and hamburger menu; feature/theme-system for the light/dark theming; feature/feeds-pages for the sample content and dynamic routes; feature/interactivity for search and the layout toggle; and feature/a11y-polish for the accessibility pass, plus a couple of smaller fix/ and chore/ branches as things came up. Each one got merged into main with the --no-ff flag, which keeps the merge as its own commit instead of silently folding the branch's history away — that is what makes git log --graph --oneline actually show the shape of the branches instead of one flat line.",
+      "The part that changed how I think about building software: a branch is not just a backup, it is a boundary around one decision at a time. I could build the theme system without worrying about half-finished feed code being in the same working tree, and if something in a branch went wrong, main was never broken while I fixed it.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-07-02",
+    imageUrl: "/images/posts/git-branches.svg",
+    imageAlt:
+      "A simple diagram of a main line with a branch splitting off and merging back in, representing a git feature branch.",
+    source: "Build Journal",
+    category: "Learning",
+  },
+  {
+    id: 6,
+    slug: "wcag-2-2-and-designing-for-accessibility",
+    title: "Research notes: WCAG 2.2 and designing for accessibility",
+    summary:
+      "I read the actual W3C WCAG 2.2 guidelines rather than guessing at 'good practice' — specifically the keyboard focus and contrast requirements — before finishing the accessibility pass on this app.",
+    body: [
+      "WCAG 2.2 is the current W3C recommendation (published October 2023) for web accessibility, and it adds requirements on top of WCAG 2.1 rather than replacing it (W3C, 2023, w3.org/TR/WCAG22/). Two requirements stood out as directly relevant to what I was building. First, keyboard operability: all functionality has to be reachable and usable through a keyboard alone, and whatever currently has keyboard focus has to be at least partially visible on screen — not hidden behind another element or scrolled out of view. Second, focus appearance: WCAG 2.2 specifically requires a visible focus indicator with a minimum size and a contrast ratio of at least 3:1 between the focused and unfocused states, which is a more concrete rule than 'add an outline'.",
+      "Reading the actual success criteria, rather than a summary of them, changed a couple of things in how I checked my own work. I stopped just clicking through the app with a mouse and did a full keyboard-only pass instead — Tab, Enter, and Escape only, watching where the focus ring landed at every step. I also went back and checked that the hamburger button, being a real <button> with aria-expanded and aria-controls, was announcing its open/closed state correctly rather than just looking right.",
+      "This is the research that most directly shaped a real decision in my build: the skip-to-content link as the very first focusable element, the visible focus-ring styling in globals.css, and the prefers-reduced-motion rule that disables the menu and theme transition animations all came from checking this app against WCAG 2.2 directly rather than trusting that it 'looked accessible'.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-07-05",
+    imageUrl: "/images/posts/accessible-content.svg",
+    imageAlt:
+      "Large readable letters beside light-on-dark and dark-on-light contrast samples.",
+    source: "Research Notes",
+    category: "Research",
+  },
+  {
+    id: 7,
+    slug: "solving-the-theme-flash-cookies-and-localstorage",
+    title: "Solving the theme flash: cookies and localStorage",
+    summary:
+      "My dark mode worked the first time I built it, except every reload flashed white before turning dark. Understanding why the server needed to know the theme too — not just the browser — is what fixed it.",
+    body: [
+      "The first version of my theme toggle only used localStorage: click the button, save 'dark' to the browser's storage, done. It worked while the tab was open, but every hard reload flashed the light theme for a moment before flipping to dark. I did not understand at first why saving the preference had not already fixed that.",
+      "The answer came from the Next.js Server/Client Components research above: Next.js renders the page on the server first and sends finished HTML to the browser, and localStorage only exists in the browser — the server has no way to read it while it is building that first HTML response. So the server always renders the default theme, and only after the page arrives and JavaScript runs does the browser correct it to dark, which is the flash. The fix was to also write the choice into a cookie, because a cookie is sent to the server with every request. Now layout.tsx reads that cookie on the server with await cookies() and stamps data-theme=\"dark\" straight onto the <html> tag before any HTML is sent — the first byte the browser receives already carries the right theme.",
+      "Every colour in the app is a CSS custom property, so that one data-theme attribute swapping is what repaints the whole page at once, in both directions. This is the single piece of the build I understood most slowly and am now most confident explaining, because I had to actually trace why saving the preference was not enough on its own.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-07-08",
     imageUrl: "/images/posts/dark-mode.svg",
     imageAlt:
       "A circle split into a light half with sun rays and a dark half with stars, representing light and dark themes.",
@@ -107,42 +163,61 @@ const posts: Post[] = [
     category: "Theming",
   },
   {
-    id: 5,
-    slug: "community-spotlight-student-built-lms-tools",
-    title: "Community spotlight: student-built LMS tools",
+    id: 8,
+    slug: "the-f-pattern-and-how-people-scan-feeds",
+    title: "Research notes: the F-pattern and how people scan feeds",
     summary:
-      "Three student projects that extend their university LMS — a deadline aggregator, a reading-list exporter, and a peer-study matcher — and what they share.",
+      "Nielsen Norman Group's original eye-tracking research shows people scan web content in an F-shaped pattern rather than reading it. I used that to check the Feeds page layout, not just the interactions.",
     body: [
-      "Some of the most useful LMS features were never shipped by a vendor. This month we look at three student-built tools that grew out of the same frustration: information that existed but was hard to reach.",
-      "A deadline aggregator pulls due dates from every enrolled course into one calendar feed. A reading-list exporter turns weekly modules into a clean citation file. A peer-study matcher connects students revising the same topic in the same week.",
-      "The common thread is syndication: each tool works by consuming structured feeds rather than scraping pages. When systems publish their data properly, small focused tools can flourish around them.",
-    ],
-    author: "Campus Dev Hub Editors",
-    date: "2026-06-28",
-    imageUrl: "/images/posts/community-tools.svg",
-    imageAlt:
-      "Dots of different sizes joined into a network, representing a community of student developers.",
-    source: "Campus Dev Hub",
-    category: "Community",
-  },
-  {
-    id: 6,
-    slug: "designing-this-feeds-view-for-fast-scanning",
-    title: "Designing this Feeds view for fast scanning",
-    summary:
-      "How I built the Feeds page you are reading: a live search that filters as you type and announces the result count, a card and list layout toggle that remembers your choice, and summaries you can expand in place — all reading through a single data function.",
-    body: [
-      "The Feeds page is the heart of the app, so I built it for scanning rather than reading. Each card front-loads the title, then the date, source and author, then a short summary — because recency and origin are what drive the decision to read or skip. Users scan lists in an F-shaped pattern, so the meaningful words go first.",
-      "Then I layered on the interactions. A search box filters the posts as you type and announces how many match through an aria-live region, so screen-reader users hear the count change. A card-versus-list toggle lets you pick the density you prefer, and that choice is saved to localStorage so it survives a reload. Each summary can be expanded and collapsed in place, letting you triage many items without leaving the list.",
-      "The detail behind all of this is that the page never touches the sample data directly — it calls getPosts() from one module. That is deliberate: in Assessment 2 I reimplement that single function against the real RSS backend, and this whole view keeps working without a component change. The interactivity I built here is exactly what an RSS reader needs.",
+      "Nielsen Norman Group's original 2006 eye-tracking study recorded how users actually looked at web pages and found the dominant pattern traced roughly the shape of the letter F: two horizontal stripes across the top and a bit further down, then a vertical stripe scanning down the left edge (Nielsen Norman Group, 2006, nngroup.com/articles/f-shaped-pattern-reading-web-content-discovered/). The reason given is straightforward: people do not read web pages, they scan them, picking up the first few words of a line or heading and deciding whether to keep going.",
+      "The practical implication is to put the meaningful words first — in a heading, in a list item, in a card title — because attention drops off sharply as the eye moves right and down the page.",
+      "Checking the Feeds page against this after building it, not before, was useful: each PostCard already leads with the title, then date and source, then a short summary, which matches the pattern. What I added because of this research was the search box announcing its result count through an aria-live region and the expand/collapse control on each summary — both let someone scanning the list decide to go deeper without leaving the page, rather than committing to a full click-through on every item that catches their eye.",
     ],
     author: siteConfig.studentName,
-    date: "2026-07-06",
+    date: "2026-07-11",
     imageUrl: "/images/posts/feed-scanning.svg",
     imageAlt:
       "A wireframe list of posts with a vertical bar tracing an F-shaped scanning pattern.",
+    source: "Research Notes",
+    category: "Research",
+  },
+  {
+    id: 9,
+    slug: "frontend-first-backend-later-staged-architecture",
+    title: "Research notes: frontend-first, backend-later staged architecture",
+    summary:
+      "Building the whole interface now with sample data, before any backend exists, is not just what the brief asked for — it is a recognised way to stage a build. I looked into why that order works.",
+    body: [
+      "This assessment's structure — build the full frontend against sample data first, add the real backend in Assessment 2 — is not an unusual constraint invented for a university brief. Industry writing on the question describes the same staged approach: implement the visual part first, using previously prepared static data that is enough to understand how the interface behaves, and only then implement the backend and swap the static data for the real thing once the frontend has proven itself (XB Software, n.d., xbsoftware.com/blog/front-end-or-back-end-development). A related framing, feature-driven development, breaks the same idea down further: build what one feature needs end-to-end rather than the whole frontend or whole backend in one pass, so assumptions get tested early instead of at the very end.",
+      "The trade-off is real, not free: sample data can hide problems a real backend will expose later — pagination, empty states, slow responses, malformed feed items — none of which show up when the data is six hand-written objects in a TypeScript file.",
+      "This is why getPosts() exists as a single function in this app rather than components importing the sample array directly. It is the seam described in this research: everything downstream of that one function — search, the layout toggle, the dynamic [slug] route — was built and tested against sample data, and in Assessment 2 that one function is what gets rewritten against the real RSS backend. No component above it should need to change.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-07-13",
+    imageUrl: "/images/posts/roadmap.svg",
+    imageAlt:
+      "Four numbered milestones in a row connected by an arrow, representing a staged four-assessment project.",
+    source: "Research Notes",
+    category: "Research",
+  },
+  {
+    id: 10,
+    slug: "trade-offs-and-where-this-goes-next",
+    title: "Trade-offs and where this goes next",
+    summary:
+      "Assessment 1 is one stage of four. Reflecting on what I chose to build now, what I deliberately left out, and what has to stay stable for the rest of the project to work.",
+    body: [
+      "Every decision in this build had to be made knowing three more assessments build on top of it, not just this one. The frontend-first research above is the reason I was comfortable with sample data standing in for real content — the cost is that some backend realities (loading states, errors, pagination) are not tested yet, but the benefit is that navigation, theming, and layout are all proven and stable before the harder backend work starts.",
+      "I also chose plain CSS Modules and custom properties over a UI framework like Bootstrap or Tailwind. That was slower to build and means more CSS to maintain, but it demonstrates the actual underlying skills — transforms, media queries, theming with variables — rather than hiding them behind a library, and it means there is no framework dependency to work around when Assessment 2 changes what data flows through these same components.",
+      "Looking ahead: Assessment 2 replaces getPosts() with a real RSS-backed function and nothing above that seam should need to change; Assessment 3 will add reporting and data on top of an interface that already has a working search and layout system to extend rather than rebuild; Assessment 4's cloud deployment and performance work benefits from a build that is already component-based and already passes its own automated Playwright suite. None of that was guaranteed by accident — it is the direct result of treating Assessment 1 as the foundation for three more stages, not as a standalone piece of coursework.",
+    ],
+    author: siteConfig.studentName,
+    date: "2026-07-15",
+    imageUrl: "/images/posts/signpost.svg",
+    imageAlt:
+      "A signpost with four numbered markers pointing forward, representing decisions made now shaping the next three assessments.",
     source: "Build Journal",
-    category: "Interactivity",
+    category: "Announcements",
   },
 ];
 

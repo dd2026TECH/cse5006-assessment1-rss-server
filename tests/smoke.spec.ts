@@ -93,12 +93,12 @@ test.describe("themes", () => {
 test.describe("feeds interactivity", () => {
   test("search narrows results and announces the count", async ({ page }) => {
     await page.goto("/feeds");
-    await expect(page.getByRole("status")).toHaveText("6 posts");
+    await expect(page.getByRole("status")).toHaveText("10 posts");
     await page.getByRole("searchbox", { name: "Search posts" }).fill("dark");
-    await expect(page.getByRole("status")).toHaveText("1 of 6 posts match");
+    await expect(page.getByRole("status")).toHaveText("1 of 10 posts match");
     await expect(
       page.getByRole("link", {
-        name: "Building a dark mode that never flashes",
+        name: "Solving the theme flash: cookies and localStorage",
         exact: true,
       }),
     ).toBeVisible();
@@ -138,13 +138,15 @@ test.describe("dynamic post pages", () => {
   }) => {
     await page.goto("/feeds");
     await page
-      .getByRole("link", { name: /Read more.*Welcome to the RSS Server/ })
+      .getByRole("link", { name: /Read more.*New concepts I met/ })
       .click();
-    await expect(page).toHaveURL(/\/feeds\/welcome-to-the-rss-server-project/);
+    await expect(page).toHaveURL(
+      /\/feeds\/new-concepts-i-met-building-my-first-app/,
+    );
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Welcome to the RSS Server project",
+        name: "New concepts I met building my first app",
       }),
     ).toBeVisible();
     const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
