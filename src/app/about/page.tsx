@@ -42,6 +42,29 @@ export default function AboutPage() {
         </p>
       </section>
 
+      <section aria-labelledby="build-heading" className={styles.section}>
+        <h2 id="build-heading">How it was built</h2>
+        <p>
+          The interface is a Next.js App Router application built from small,
+          reusable components — header, footer, navigation, post cards —
+          backed by a typed data layer. Each capability (layout, theming, the
+          feeds pages, interactivity, accessibility, automated tests) was
+          developed on its own git branch, tested, and merged into a clean{" "}
+          <code>main</code>, so the commit history traces the build
+          step by step.
+        </p>
+        <p>
+          <a
+            href="https://github.com/dd2026TECH/cse5006-assessment1-rss-server"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View the source and full commit history on GitHub
+          </a>
+          .
+        </p>
+      </section>
+
       <section aria-labelledby="video-heading" className={styles.section}>
         <h2 id="video-heading">How to use this website</h2>
         <p>
