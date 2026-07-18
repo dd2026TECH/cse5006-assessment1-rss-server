@@ -98,7 +98,7 @@ test.describe("feeds interactivity", () => {
     await expect(page.getByRole("status")).toHaveText("1 of 6 posts match");
     await expect(
       page.getByRole("link", {
-        name: "Getting started with dark mode in web apps",
+        name: "Building a dark mode that never flashes",
         exact: true,
       }),
     ).toBeVisible();
