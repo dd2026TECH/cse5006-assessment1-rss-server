@@ -20,10 +20,11 @@ npm run dev      # http://localhost:3000
 Other scripts: `npm run build` (production build), `npm run lint` (ESLint),
 `npm test` (Playwright smoke suite — boots its own dev server on port 3457).
 
-**Before submission:** set your name and student number in
-[`src/lib/siteConfig.ts`](src/lib/siteConfig.ts) — the header, footer and
-About page all read from it. Drop the walkthrough video at
-`public/videos/how-to.mp4`.
+**Repository:** [github.com/dd2026TECH/cse5006-assessment1-rss-server](https://github.com/dd2026TECH/cse5006-assessment1-rss-server)
+
+**Before submission:** drop the walkthrough video at `public/videos/how-to.mp4`
+— the About page embeds it and currently shows an empty player until the file
+is added.
 
 ## Pages
 
@@ -47,7 +48,8 @@ About page all read from it. Drop the walkthrough video at
   visible focus styles, WCAG AA contrast in both themes,
   `prefers-reduced-motion` support.
 - **Interactive feeds** — live search with an announced result count,
-  persisted card/list layout, expand/collapse summaries, breadcrumbs.
+  persisted card/list layout, expand/collapse summaries, breadcrumbs, and
+  post artwork with author bylines.
 
 ## Structure
 
@@ -73,9 +75,13 @@ summary expand/collapse, dynamic post pages, breadcrumbs, and 404s. Run with `np
 
 ## Git workflow
 
-Feature branches merged into `main` with `--no-ff`:
+Feature branches merged into `main` with `--no-ff`, each one lint-checked and
+run through the Playwright suite before merging:
+
 `feature/layout-shell` → `feature/theme-system` → `feature/feeds-pages` →
-`feature/interactivity` → `feature/a11y-polish`.
+`feature/interactivity` → `feature/a11y-polish` → `feature/playwright-tests` →
+`docs/code-tour` → `chore/student-identity` → `feature/post-images` →
+`fix/nav-order-consistency`.
 
 ## Roadmap
 

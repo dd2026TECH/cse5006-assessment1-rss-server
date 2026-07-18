@@ -178,8 +178,8 @@ For state that must **survive closing the tab** (theme, card/list layout), the a
   from, so swapping in the Assessment 2 database changes one file, zero components. ("A seam.")
 - **Components own their CSS** — deleting a component deletes its styles; nothing global breaks.
 - **Git feature branches** (`git log --graph --oneline` shows it): each capability built on its
-  own branch, merged into main — layout → themes → feeds → interactivity → polish → tests. The
-  history *is* the build story, and it's worth marks.
+  own branch, merged into main — layout → themes → feeds → interactivity → polish → tests →
+  post images → identity/nav fixes. The history *is* the build story, and it's worth marks.
 
 ## 10. Learn by poking (30 minutes, genuinely the fastest way)
 
