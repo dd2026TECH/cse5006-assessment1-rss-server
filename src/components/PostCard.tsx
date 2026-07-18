@@ -9,11 +9,9 @@ import styles from "./PostCard.module.css";
 
 const categoryStyles: Record<Post["category"], string> = {
   Announcements: styles.announcements,
+  Learning: styles.learning,
   Theming: styles.theming,
-  Interactivity: styles.interactivity,
-  Accessibility: styles.accessibility,
   Research: styles.research,
-  Community: styles.community,
 };
 
 export default function PostCard({
