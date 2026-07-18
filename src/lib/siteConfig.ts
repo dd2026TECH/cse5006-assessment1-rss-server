@@ -10,8 +10,8 @@ export const siteConfig = {
     "A usability-focused frontend for an RSS Server feeding into an LMS. Assessment 1 covers the user interface only; backend feed processing arrives in Assessment 2.",
   nav: [
     { href: "/", label: "Home" },
-    { href: "/feeds", label: "Feeds" },
     { href: "/about", label: "About" },
+    { href: "/feeds", label: "Feeds" },
     { href: "/settings", label: "Settings" },
   ],
 } as const;
