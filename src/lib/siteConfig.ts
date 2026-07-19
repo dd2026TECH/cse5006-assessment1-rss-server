@@ -2,15 +2,19 @@
 // Header, Footer, About and metadata all read from here.
 
 export const siteConfig = {
-  siteName: "RSS Server",
+  siteName: "LMS on Cloud — Web Application Build",
   assessmentTitle: "CSE5006 Assessment 1 — Frontend Design & Usability",
   studentName: "Xueting Denise Chin",
   studentId: "22663637",
   description:
-    "A usability-focused frontend for an RSS Server feeding into an LMS. Assessment 1 covers the user interface only; backend feed processing arrives in Assessment 2.",
+    "A Learning Management System delivered on the cloud, built as a web application across four assessed parts — documented from a student's perspective so other students can see exactly how it was built. This part (Assessment 1) is the frontend; the RSS Server is the content engine that will feed the LMS once the backend arrives.",
   nav: [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/assessment-1", label: "Assessment 1" },
+    { href: "/assessment-2", label: "Assessment 2" },
+    { href: "/assessment-3", label: "Assessment 3" },
+    { href: "/assessment-4", label: "Assessment 4" },
     { href: "/feeds", label: "Feeds" },
     { href: "/settings", label: "Settings" },
   ],

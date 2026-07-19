@@ -1,7 +1,9 @@
-# RSS Server Frontend — CSE5006 Assessment 1
+# LMS on Cloud — Web Application Build (CSE5006 Assessment 1)
 
-A usability-focused frontend for an **RSS Server feeding into an LMS**.
-Assessment 1 is **frontend only**: blog-style sample content stands in for
+A Learning Management System delivered on the cloud, built as a web
+application across four assessed parts and documented from a student's
+perspective so other students can see how it was built. This repo is
+**Assessment 1**, the frontend: blog-style sample content stands in for real
 RSS feed items until the backend arrives in Assessment 2.
 
 Bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
@@ -30,8 +32,12 @@ is added.
 
 | Route | Purpose |
 |---|---|
-| `/` | Landing page: project intro, page links, RSS→LMS workflow overview |
-| `/about` | Project explanation, current scope, how-to video, author details |
+| `/` | Landing page: project intro, links to the four assessment pages + other pages, RSS→LMS workflow overview |
+| `/about` | Project explanation, the four assessed parts, current scope, how-to video, author details |
+| `/assessment-1` | What Assessment 1 delivered (this build) + the how-to video |
+| `/assessment-2` | Placeholder: backend, API & database (fills in once built) |
+| `/assessment-3` | Placeholder: data-driven app & reporting (fills in once built) |
+| `/assessment-4` | Placeholder: live demonstration (fills in once built) |
 | `/feeds` | Sample posts: search, card/list layout toggle, expandable summaries |
 | `/feeds/[slug]` | Dynamic post pages with breadcrumbs |
 | `/settings` | Theme (light/dark/system) and feed layout preferences |
@@ -58,8 +64,8 @@ src/
 ├── app/          # App Router routes (each page + its CSS module)
 ├── components/   # Reusable UI (Header, Footer, NavBar, HamburgerMenu,
 │                 # ThemeProvider, PostCard, FeedsView, Breadcrumbs, …)
-└── lib/          # siteConfig, sample posts behind getPosts(),
-                  # useLocalStorage hook, preference keys
+└── lib/          # siteConfig, assessments (the four parts), sample posts
+                  # behind getPosts(), useLocalStorage hook, preference keys
 ```
 
 Posts are read exclusively through `getPosts()` / `getPostBySlug()` in

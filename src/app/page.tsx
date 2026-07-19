@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
+import { assessments } from "@/lib/assessments";
 import styles from "./page.module.css";
 
 const pageLinks = [
   {
     href: "/about",
     title: "About",
-    text: "What this project is, where it is heading, and a video showing how to use the site.",
+    text: "What this project is, the four assessed parts, and a video showing how to use the site.",
   },
   {
     href: "/feeds",
@@ -19,6 +20,12 @@ const pageLinks = [
     text: "Switch between light and dark themes and set your preferred feed layout.",
   },
 ];
+
+const assessmentLinks = assessments.map((a) => ({
+  href: `/${a.slug}`,
+  title: `Assessment ${a.number} — ${a.title}`,
+  text: a.summary,
+}));
 
 const workflow = [
   {
@@ -42,16 +49,33 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <h1>{siteConfig.siteName} frontend</h1>
+        <h1>{siteConfig.siteName}</h1>
         <p className={styles.lede}>{siteConfig.description}</p>
         <div className={styles.actions}>
-          <Link href="/feeds" className={styles.primaryCta}>
-            Browse feeds
+          <Link href="/assessment-1" className={styles.primaryCta}>
+            Start with Assessment 1
           </Link>
           <Link href="/about" className={styles.secondaryCta}>
             About the project
           </Link>
         </div>
+      </section>
+
+      <section aria-labelledby="assessments-heading" className={styles.section}>
+        <h2 id="assessments-heading">The four assessed parts</h2>
+        <ul className={styles.cardGrid}>
+          {assessmentLinks.map(({ href, title, text }) => (
+            <li key={href}>
+              <Link href={href} className={styles.card}>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                <span className={styles.cardCue} aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="explore-heading" className={styles.section}>
