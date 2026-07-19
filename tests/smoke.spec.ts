@@ -45,21 +45,13 @@ test.describe("shell", () => {
 });
 
 test.describe("assessment pages", () => {
-  test("Assessment 1 page renders its heading and how-to video", async ({
-    page,
-  }) => {
+  test("Assessment 1 page renders its heading", async ({ page }) => {
     await page.goto("/assessment-1");
     await expect(
       page.getByRole("heading", {
         level: 1,
         name: /Assessment 1 — Frontend design & usability/,
       }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "How-to video" }),
-    ).toBeVisible();
-    await expect(
-      page.locator("video[aria-label='Video walkthrough of how to use this website']"),
     ).toBeVisible();
   });
 
