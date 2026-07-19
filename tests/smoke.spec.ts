@@ -6,6 +6,7 @@ test.describe("shell", () => {
     page,
   }) => {
     await page.goto("/");
+    await expect(page.getByRole("banner")).toContainText("LMS on Cloud");
     await expect(page.getByRole("banner")).toContainText(
       "CSE5006 Assessment 1",
     );
@@ -29,6 +30,52 @@ test.describe("shell", () => {
     ).toHaveAttribute("aria-current", "page");
     await expect(
       page.getByRole("navigation", { name: "Breadcrumb" }),
+    ).toBeVisible();
+  });
+
+  test("primary nav lists all four assessment pages", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Primary" });
+    for (let n = 1; n <= 4; n++) {
+      await expect(
+        nav.getByRole("link", { name: `Assessment ${n}`, exact: true }),
+      ).toBeVisible();
+    }
+  });
+});
+
+test.describe("assessment pages", () => {
+  test("Assessment 1 page renders its heading and how-to video", async ({
+    page,
+  }) => {
+    await page.goto("/assessment-1");
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: /Assessment 1 — Frontend design & usability/,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "How-to video" }),
+    ).toBeVisible();
+    await expect(
+      page.locator("video[aria-label='Video walkthrough of how to use this website']"),
+    ).toBeVisible();
+  });
+
+  test("Assessment 3 page renders as an upcoming placeholder", async ({
+    page,
+  }) => {
+    await page.goto("/assessment-3");
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: /Assessment 3 — Data-driven app & reporting/,
+      }),
+    ).toBeVisible();
+    await expect(page.getByText("upcoming")).toBeVisible();
+    await expect(
+      page.getByText("This part hasn't been built yet"),
     ).toBeVisible();
   });
 });

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
+import { assessments } from "@/lib/assessments";
+import HowToVideo from "@/components/HowToVideo";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "What the RSS Server project is, its current frontend-only scope, and where it is heading.",
+    "What LMS on Cloud is, the four assessed parts it's built across, and where the project is heading.",
 };
 
 export default function AboutPage() {
@@ -16,12 +19,39 @@ export default function AboutPage() {
       <section aria-labelledby="what-heading" className={styles.section}>
         <h2 id="what-heading">What it is</h2>
         <p>
-          This application is the frontend for an <strong>RSS Server</strong>:
-          a system that collects content from RSS feeds, organises it into
-          readable posts, and delivers it to learners through a Learning
-          Management System (LMS). The interface focuses on making feed
-          content easy to navigate, scan, and read on any device.
+          <strong>LMS on Cloud</strong> is a Learning Management System
+          delivered on the cloud, built as a web application across four
+          assessed parts. Rather than a finished product handed over at the
+          end, each part is documented as it&apos;s built — from one student
+          to others — so the reasoning behind every decision is visible, not
+          just the result.
         </p>
+        <p>
+          The content the LMS delivers comes from an <strong>RSS Server</strong>:
+          a system that collects content from RSS feeds and organises it into
+          readable posts for learners. This part of the build, Assessment 1,
+          is the interface that will eventually display that content —
+          focused on making it easy to navigate, scan, and read on any
+          device.
+        </p>
+      </section>
+
+      <section aria-labelledby="parts-heading" className={styles.section}>
+        <h2 id="parts-heading">The four parts</h2>
+        <p>
+          Every assessment adds a layer to the same application; by
+          Assessment 4 they all run together as one system.
+        </p>
+        <ul className={styles.partsList}>
+          {assessments.map((a) => (
+            <li key={a.slug}>
+              <Link href={`/${a.slug}`}>
+                Assessment {a.number} — {a.title}
+              </Link>{" "}
+              <span className={styles.partStatus}>({a.status})</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="scope-heading" className={styles.section}>
@@ -71,16 +101,7 @@ export default function AboutPage() {
           The short video below walks through the site: navigating between
           pages, switching themes, and browsing the feeds.
         </p>
-        <video
-          className={styles.video}
-          controls
-          preload="metadata"
-          aria-label="Video walkthrough of how to use this website"
-        >
-          <source src="/videos/how-to.mp4" type="video/mp4" />
-          Your browser does not support embedded video. The walkthrough video
-          is available at /videos/how-to.mp4.
-        </video>
+        <HowToVideo />
       </section>
 
       <section aria-labelledby="author-heading" className={styles.section}>
