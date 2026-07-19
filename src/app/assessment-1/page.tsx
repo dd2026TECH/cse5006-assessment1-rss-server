@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAssessment } from "@/lib/assessments";
-import HowToVideo from "@/components/HowToVideo";
 import styles from "./assessment-1.module.css";
 
 const assessment = getAssessment("assessment-1")!;
@@ -42,16 +41,6 @@ export default function Assessment1Page() {
             <li key={item}>{item}</li>
           ))}
         </ul>
-      </section>
-
-      <section aria-labelledby="video-heading" className={styles.section}>
-        <h2 id="video-heading">How-to video</h2>
-        <p>
-          A short walkthrough of the site: navigating between pages, switching
-          themes, and browsing the feeds. The same clip appears on the{" "}
-          <Link href="/about">About page</Link>.
-        </p>
-        <HowToVideo />
       </section>
 
       <nav className={styles.links} aria-label="Related pages">
