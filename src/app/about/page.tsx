@@ -19,12 +19,12 @@ export default function AboutPage() {
       <section aria-labelledby="what-heading" className={styles.section}>
         <h2 id="what-heading">What it is</h2>
         <p>
-          <strong>LMS on Cloud</strong> is a Learning Management System
-          delivered on the cloud, built as a web application across four
-          assessed parts. Rather than a finished product handed over at the
-          end, each part is documented as it&apos;s built — from one student
-          to others — so the reasoning behind every decision is visible, not
-          just the result.
+          <strong>LMS on Cloud</strong>{" "}
+          is a Learning Management System delivered on the cloud, built as a
+          web application across four assessed parts. Rather than a finished
+          product handed over at the end, each part is documented as
+          it&apos;s built — from one student to others — so the reasoning
+          behind every decision is visible, not just the result.
         </p>
         <p>
           The content the LMS delivers comes from an <strong>RSS Server</strong>:
