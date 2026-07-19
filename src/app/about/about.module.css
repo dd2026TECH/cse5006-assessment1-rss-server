@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 2rem;
   max-width: 46rem;
+  margin-inline: auto;
 }
 
 .section h2 {
