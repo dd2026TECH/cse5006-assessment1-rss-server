@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
 import "./globals.css";
 import { siteConfig } from "@/lib/siteConfig";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+// Runs before paint so the theme is correct with zero flash, without a
+// per-request cookies() read — that would force every route to render
+// dynamically, which is what made navigation between pages feel slow.
+const noFlashThemeScript = `
+(function () {
+  try {
+    var theme = document.cookie.match(/(?:^|; )theme=(light|dark)/);
+    if (theme) document.documentElement.dataset.theme = theme[1];
+  } catch (e) {}
+})();
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,26 +36,18 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Reading the theme cookie here lets the server render the correct theme
-  // on first paint — no flash of the wrong theme on reload.
-  const cookieStore = await cookies();
-  const themeCookie = cookieStore.get("theme")?.value;
-  const initialTheme =
-    themeCookie === "light" || themeCookie === "dark" ? themeCookie : null;
-
   return (
-    <html
-      lang="en"
-      data-theme={initialTheme ?? undefined}
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: noFlashThemeScript }} />
+      </head>
       <body>
-        <ThemeProvider initialTheme={initialTheme}>
+        <ThemeProvider initialTheme={null}>
           <a className="skip-link" href="#main">
             Skip to main content
           </a>
