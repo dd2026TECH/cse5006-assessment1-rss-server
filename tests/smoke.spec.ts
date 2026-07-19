@@ -93,9 +93,9 @@ test.describe("themes", () => {
 test.describe("feeds interactivity", () => {
   test("search narrows results and announces the count", async ({ page }) => {
     await page.goto("/feeds");
-    await expect(page.getByRole("status")).toHaveText("10 posts");
+    await expect(page.getByRole("status")).toHaveText("11 posts");
     await page.getByRole("searchbox", { name: "Search posts" }).fill("dark");
-    await expect(page.getByRole("status")).toHaveText("1 of 10 posts match");
+    await expect(page.getByRole("status")).toHaveText("1 of 11 posts match");
     await expect(
       page.getByRole("link", {
         name: "Solving the theme flash: cookies and localStorage",
