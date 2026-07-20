@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
 import { assessments } from "@/lib/assessments";
+import LinkCardGrid from "@/components/LinkCardGrid";
 import styles from "./page.module.css";
 
 const pageLinks = [
@@ -63,36 +64,12 @@ export default function Home() {
 
       <section aria-labelledby="assessments-heading" className={styles.section}>
         <h2 id="assessments-heading">The four assessed parts</h2>
-        <ul className={styles.cardGrid}>
-          {assessmentLinks.map(({ href, title, text }) => (
-            <li key={href}>
-              <Link href={href} className={styles.card}>
-                <h3>{title}</h3>
-                <p>{text}</p>
-                <span className={styles.cardCue} aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <LinkCardGrid items={assessmentLinks} />
       </section>
 
       <section aria-labelledby="explore-heading" className={styles.section}>
         <h2 id="explore-heading">Explore</h2>
-        <ul className={styles.cardGrid}>
-          {pageLinks.map(({ href, title, text }) => (
-            <li key={href}>
-              <Link href={href} className={styles.card}>
-                <h3>{title}</h3>
-                <p>{text}</p>
-                <span className={styles.cardCue} aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <LinkCardGrid items={pageLinks} />
       </section>
 
       <section aria-labelledby="workflow-heading" className={styles.section}>
