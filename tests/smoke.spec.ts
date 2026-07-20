@@ -194,8 +194,17 @@ test.describe("dynamic post pages", () => {
     await expect(page).toHaveURL("/feeds");
   });
 
-  test("unknown slug returns 404", async ({ page }) => {
+  test("unknown slug returns a branded 404 with a way back", async ({
+    page,
+  }) => {
     const response = await page.goto("/feeds/does-not-exist");
     expect(response?.status()).toBe(404);
+    // Branded not-found page, not the unstyled framework default: it keeps the
+    // shell (nav) and offers navigation back.
+    await expect(
+      page.getByRole("heading", { name: "This page could not be found" }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Back to home" })).toBeVisible();
+    await expect(page.getByRole("navigation").first()).toBeVisible();
   });
 });
