@@ -20,13 +20,15 @@ npm run dev      # http://localhost:3000
 ```
 
 Other scripts: `npm run build` (production build), `npm run lint` (ESLint),
-`npm test` (Playwright smoke suite — boots its own dev server on port 3457).
+`npm test` (Playwright smoke suite — runs against a production build on port
+3457).
 
 **Repository:** [github.com/dd2026TECH/cse5006-assessment1-rss-server](https://github.com/dd2026TECH/cse5006-assessment1-rss-server)
 
-**Before submission:** drop the walkthrough video at `public/videos/how-to.mp4`
-— the About page embeds it and currently shows an empty player until the file
-is added.
+The About and Assessment 1 pages embed the walkthrough video from
+`public/videos/how-to.mp4`, which is recorded and committed. If you re-record
+it, run `npm run compress-video` to re-encode the file under the repo's 1 MB
+limit before committing.
 
 ## Pages
 
@@ -81,13 +83,18 @@ summary expand/collapse, dynamic post pages, breadcrumbs, and 404s. Run with `np
 
 ## Git workflow
 
-Feature branches merged into `main` with `--no-ff`, each one lint-checked and
-run through the Playwright suite before merging:
+Every change was built on its own branch and merged into `main` with `--no-ff`,
+so each feature boundary stays visible in the history. Each branch was
+lint-checked and run through the Playwright suite before merging.
+
+The build spans 27 merged branches — `feature/*` for new capability, `fix/*`
+for corrections, and `refactor/*`, `docs/*` and `chore/*` for the rest. The
+opening sequence was:
 
 `feature/layout-shell` → `feature/theme-system` → `feature/feeds-pages` →
-`feature/interactivity` → `feature/a11y-polish` → `feature/playwright-tests` →
-`docs/code-tour` → `chore/student-identity` → `feature/post-images` →
-`fix/nav-order-consistency`.
+`feature/interactivity` → `feature/a11y-polish` → `feature/playwright-tests`
+
+Run `git log --graph --oneline` to see the full shape.
 
 ## Roadmap
 
