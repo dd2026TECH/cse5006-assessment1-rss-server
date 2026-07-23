@@ -45,8 +45,10 @@ is added.
 ## Features
 
 - **Themes** — light/dark via CSS custom properties. The choice persists in
-  localStorage **and** a cookie, so the server renders the correct theme on
-  first paint (no flash). First visit follows `prefers-color-scheme`.
+  a cookie **and** localStorage; a small inline script in `<head>` applies it
+  before the browser paints, so there is no flash of the wrong theme *and*
+  every page still ships as static HTML. First visit follows
+  `prefers-color-scheme`.
 - **Responsive navigation** — desktop nav bar collapses into an animated
   hamburger menu (CSS transforms) with `aria-expanded`, Escape-to-close and
   close-on-navigation.
