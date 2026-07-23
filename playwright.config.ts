@@ -10,9 +10,12 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    // Production build + server: avoids Next's one-dev-server-per-project
-    // lock and tests the app as it actually ships.
-    command: "npm run build && npm run start -- --port 3457",
+    // Serves the production build, so tests exercise the app as it actually
+    // ships. The build itself runs in `npm test` rather than here: spawning
+    // `next build` from this config crashed Turbopack's parallel workers on
+    // Windows (exit 0xC0000409) even though the same build succeeds when run
+    // directly from a shell.
+    command: "npm run start -- --port 3457",
     url: "http://localhost:3457",
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
