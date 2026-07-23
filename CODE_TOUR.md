@@ -131,13 +131,22 @@ The theme click, step by step:
    ```
    Stamping `data-theme="dark"` on `<html>` swaps every variable at once. One attribute,
    whole app re-themed.
-4. Why the cookie (③)? On your next visit the **server** reads it in `layout.tsx`
-   (`await cookies()`) and renders `<html data-theme="dark">` straight away — so the page never
-   flashes white before turning dark. localStorage (②) is the backup copy.
+4. Why the cookie (③)? On your next visit a **small inline script in `<head>`** (look at the
+   top of `layout.tsx`) reads that cookie and stamps `data-theme="dark"` onto `<html>`
+   *before the browser paints anything* — so the page never flashes white before turning
+   dark. localStorage (②) is the backup copy, used if the cookie was cleared.
+
+   **Why not read the cookie on the server?** That was the obvious alternative — `await
+   cookies()` inside `layout.tsx`. It works, but calling `cookies()` opts the route into
+   **dynamic rendering**: every page would be rebuilt per request instead of being served as
+   pre-built static HTML, which disables `<Link>` prefetching and makes navigation feel slow.
+   `npm run build` prints the proof — every route is `○ (Static)` today; with `await cookies()`
+   they turn into `ƒ (Dynamic)`. The inline script buys the same no-flash result without
+   giving up static rendering.
 
 This is the most impressive technical detail in the app — be able to say it in the video:
-*"the theme is CSS variables switched by a data attribute; the choice is saved in a cookie so
-the server renders the right theme with no flash."*
+*"the theme is CSS variables switched by a data attribute; the choice is saved in a cookie and
+applied by a tiny inline script before first paint — no flash, and the pages stay static."*
 
 ## 7. Story 3 — you click "Read more" (dynamic pages)
 
@@ -200,8 +209,9 @@ With `npm run dev` running, make each change, watch the browser, then undo it:
 > "It's a Next.js App Router application. Folders under `src/app` are the pages; shared UI like
 > the header, footer and hamburger menu are reusable components; data and logic live in `lib`.
 > Pages render on the server — only interactive pieces run in the browser. Theming is CSS
-> variables switched by a `data-theme` attribute, persisted in a cookie so the server renders
-> the right theme with no flash. The Feeds page reads through a `getPosts()` function, which is
+> variables switched by a `data-theme` attribute, persisted in a cookie and applied by a tiny
+> inline script before first paint, so there's no flash and every page stays static. The Feeds
+> page reads through a `getPosts()` function, which is
 > the seam where the Assessment 2 backend plugs in."
 
 ## 12. Glossary

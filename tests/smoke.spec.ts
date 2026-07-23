@@ -109,7 +109,8 @@ test.describe("themes", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
     await page.reload();
-    // Server must render the dark theme from the cookie — no flash.
+    // The inline script in <head> must re-apply the cookie's theme before
+    // the browser paints — no flash.
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   });
 

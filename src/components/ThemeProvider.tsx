@@ -23,9 +23,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
-// Preference is written to BOTH localStorage and a cookie: localStorage
-// survives cookie clearing, while the cookie lets the server render the
-// correct theme on first paint (no flash of the wrong theme).
+// Preference is written to BOTH localStorage and a cookie. The cookie is
+// what the inline script in layout.tsx reads before the browser paints,
+// which is what prevents a flash of the wrong theme; localStorage is the
+// fallback that survives the cookie being cleared, re-applied by the
+// effect below.
 function applyToDom(preference: ThemePreference) {
   const root = document.documentElement;
   if (preference === "system") {
