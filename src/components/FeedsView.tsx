@@ -3,8 +3,14 @@
 import { useState } from "react";
 import type { Post } from "@/lib/posts";
 import { useLocalStorage } from "@/lib/useLocalStorage";
-import { FEED_LAYOUT_KEY, type FeedLayout } from "@/lib/preferences";
+import {
+  FEED_LAYOUT_KEY,
+  SAVED_FEEDS_KEY,
+  type FeedLayout,
+  type SavedFeed,
+} from "@/lib/preferences";
 import PostCard from "./PostCard";
+import AddFeedDialog from "./AddFeedDialog";
 import styles from "./FeedsView.module.css";
 
 export default function FeedsView({ posts }: { posts: Post[] }) {
@@ -13,6 +19,11 @@ export default function FeedsView({ posts }: { posts: Post[] }) {
     FEED_LAYOUT_KEY,
     "card",
   );
+  const [savedFeeds, setSavedFeeds] = useLocalStorage<SavedFeed[]>(
+    SAVED_FEEDS_KEY,
+    [],
+  );
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const trimmed = query.trim().toLowerCase();
   const filtered = trimmed
@@ -62,7 +73,62 @@ export default function FeedsView({ posts }: { posts: Post[] }) {
             List
           </button>
         </div>
+        <button
+          type="button"
+          className={styles.addFeedButton}
+          onClick={() => setDialogOpen(true)}
+        >
+          + Add RSS feed
+        </button>
       </div>
+
+      {savedFeeds.length > 0 && (
+        <section
+          className={styles.savedFeeds}
+          aria-labelledby="saved-feeds-heading"
+        >
+          <h2 id="saved-feeds-heading" className={styles.savedFeedsHeading}>
+            My feeds
+          </h2>
+          <ul className={styles.savedFeedsList}>
+            {savedFeeds.map((feed) => (
+              <li key={feed.id} className={styles.savedFeedItem}>
+                <div className={styles.savedFeedInfo}>
+                  <span className={styles.savedFeedName}>{feed.name}</span>
+                  <span className={styles.savedFeedMeta}>
+                    {feed.category}
+                    <span aria-hidden="true"> · </span>
+                    {feed.url}
+                  </span>
+                  {feed.description && (
+                    <span className={styles.savedFeedDescription}>
+                      {feed.description}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className={styles.removeFeedButton}
+                  onClick={() =>
+                    setSavedFeeds(
+                      savedFeeds.filter((item) => item.id !== feed.id),
+                    )
+                  }
+                >
+                  Remove
+                  <span className="sr-only"> {feed.name}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <AddFeedDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onAdd={(feed) => setSavedFeeds([...savedFeeds, feed])}
+      />
 
       <p className={styles.count} role="status">
         {filtered.length === posts.length
